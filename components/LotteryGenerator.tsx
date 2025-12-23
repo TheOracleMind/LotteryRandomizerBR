@@ -4,6 +4,8 @@ import { useState } from "react";
 import { LotteryGame } from "@/app/types";
 import NumberBall from "./NumberBall";
 import SlotMachine from "./SlotMachine";
+import NextDrawBanner from "./NextDrawBanner";
+import LotteryInfo from "./LotteryInfo";
 import Link from "next/link";
 
 type LotteryGeneratorProps = {
@@ -95,7 +97,7 @@ export default function LotteryGenerator({ game }: LotteryGeneratorProps) {
         </Link>
 
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <h1 className={`text-5xl md:text-7xl font-bold mb-4 bg-gradient-to-r ${game.color} bg-clip-text text-transparent`}>
             {game.name}
           </h1>
@@ -105,6 +107,9 @@ export default function LotteryGenerator({ game }: LotteryGeneratorProps) {
             {game.secondaryNumbers && ` + ${game.secondaryNumbers.count} ${game.secondaryNumbers.label}`}
           </p>
         </div>
+
+        {/* Next Draw Info - Above the Fold */}
+        <NextDrawBanner game={game} />
 
         {/* Slot Machine / Lever */}
         <SlotMachine onGenerate={generateNumbers} isGenerating={isGenerating} />
@@ -214,7 +219,7 @@ export default function LotteryGenerator({ game }: LotteryGeneratorProps) {
         )}
 
         {/* Game Info */}
-        <div className="mt-16 max-w-2xl mx-auto bg-gray-900/50 rounded-2xl p-6 border border-gray-800">
+        <div className="mt-16 max-w-2xl mx-auto bg-gray-900/50 rounded-2xl p-6 border border-gray-800 mb-12">
           <h3 className="text-xl font-bold text-white mb-4">Como funciona?</h3>
           <ul className="space-y-2 text-gray-300">
             <li className="flex items-start gap-3">
@@ -231,6 +236,9 @@ export default function LotteryGenerator({ game }: LotteryGeneratorProps) {
             </li>
           </ul>
         </div>
+
+        {/* Detailed Lottery Info - Below the Fold */}
+        <LotteryInfo game={game} />
       </div>
     </div>
   );

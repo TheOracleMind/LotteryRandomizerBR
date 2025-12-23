@@ -11,19 +11,30 @@
 ## Animações
 
 - Alavanca interativa que puxa para baixo
-- Bolinhas girando antes de revelar números
-- Números aparecem um por um com delay
-- Efeito de brilho (glow) nas bolinhas
-- Efeito de revelação com rotação 360°
+- **Bolinhas aparecem brancas com ponto de interrogação**
+- **Bolinhas giram continuamente antes de revelar**
+- Números aparecem um por um com delay sequencial
+- Efeito de brilho (glow) nas bolinhas reveladas
+- Efeito de revelação com rotação 360° e mudança de cor
+- Transição suave de branco para gradiente colorido
 - Animação de pulse no texto de instruções
 
 ## Funcionalidades
 
 - Gerador de números aleatórios para 9 jogos
+- **Integração com API oficial da Caixa Econômica Federal**
+- **Exibição do último resultado sorteado**
+- **Informações do próximo concurso em tempo real**
+- **Valor estimado do prêmio atualizado**
+- **Detalhes de premiação por faixa**
+- **Status de acumulação**
+- **Número de ganhadores de cada faixa**
 - Botão de copiar números para área de transferência
 - Sistema de navegação entre jogos
 - Explicação de como funciona cada jogo
 - Aviso legal completo
+- Loading states durante busca de dados
+- Error handling para falhas na API
 
 ## SEO
 

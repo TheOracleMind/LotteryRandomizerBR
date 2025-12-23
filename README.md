@@ -16,13 +16,31 @@ Um site moderno e emocionante para gerar números aleatórios para todos os jogo
 
 ## Recursos
 
+### Gerador de Números
 - Design minimalista e emocional
 - Animações de suspense ao estilo caça-níquel
 - Alavanca interativa para gerar números
-- Bolinhas numeradas com efeitos visuais
+- Bolinhas brancas girando antes de revelar números
+- Efeitos visuais com rotação e brilho
 - Totalmente responsivo (mobile-first)
+
+### Informações em Tempo Real
+- **Integração com API oficial da Caixa**
+- Último resultado do sorteio com números sorteados
+- Informações do próximo concurso
+- Valor estimado do prêmio
+- Status de acumulação
+- Detalhes de premiação por faixa
+- Número de ganhadores
+- Data dos sorteios
+- Todas as informações atualizadas automaticamente
+
+### SEO e Performance
 - Otimizado para SEO
 - Metadata completa para cada jogo
+- Sitemap XML automático
+- Static Site Generation (SSG)
+- Requests client-side para evitar bloqueios
 
 ## Desenvolvimento
 

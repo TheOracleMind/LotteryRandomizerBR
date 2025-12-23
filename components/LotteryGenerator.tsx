@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { LotteryGame } from "@/app/types";
-import NumberBall from "./NumberBall";
 import SlotMachine from "./SlotMachine";
 import NextDrawBanner from "./NextDrawBanner";
+import ResultDisplay from "./ResultDisplay";
 import LotteryInfo from "./LotteryInfo";
 import Link from "next/link";
 
@@ -72,14 +72,22 @@ export default function LotteryGenerator({ game }: LotteryGeneratorProps) {
     }, 1500);
   };
 
-  const formatSecondaryDisplay = () => {
-    if (game.id === "timemania" || game.id === "dia-de-sorte") {
-      return secondaryText;
-    }
-    if (game.id === "mais-milionaria") {
-      return secondaryText;
-    }
-    return secondaryNumber?.toString().padStart(2, '0');
+  const handleCopy = () => {
+    const formatSecondaryDisplay = () => {
+      if (game.id === "timemania" || game.id === "dia-de-sorte") {
+        return secondaryText;
+      }
+      if (game.id === "mais-milionaria") {
+        return secondaryText;
+      }
+      return secondaryNumber?.toString().padStart(2, '0');
+    };
+
+    const text = `${game.name}: ${primaryNumbers.join(", ")}${
+      secondaryText ? ` | ${game.secondaryNumbers?.label}: ${formatSecondaryDisplay()}` : ""
+    }`;
+    navigator.clipboard.writeText(text);
+    alert("Números copiados para a área de transferência!");
   };
 
   return (
@@ -112,110 +120,18 @@ export default function LotteryGenerator({ game }: LotteryGeneratorProps) {
         <NextDrawBanner game={game} />
 
         {/* Slot Machine / Lever */}
-        <SlotMachine onGenerate={generateNumbers} isGenerating={isGenerating} />
+        <SlotMachine onGenerate={generateNumbers} isGenerating={isGenerating} gameGradient={game.gradient} />
 
-        {/* Generated Numbers Display */}
+        {/* Generated Numbers Display - NEW DRAMATIC RESULT */}
         {primaryNumbers.length > 0 && (
-          <div className="mt-16 mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-center text-white mb-8">
-              Seus números da sorte:
-            </h2>
-
-            {/* Primary Numbers */}
-            <div className={`
-              flex flex-wrap justify-center gap-4 md:gap-6 mb-8
-              ${game.id === 'lotomania' || game.id === 'lotofacil' ? 'max-w-5xl mx-auto' : ''}
-            `}>
-              {primaryNumbers.map((num, index) => (
-                <NumberBall
-                  key={index}
-                  number={num}
-                  delay={index * 400}
-                  isRevealed={true}
-                  gradient={game.gradient}
-                  label={game.id === 'super-sete' ? `Col ${index + 1}` : undefined}
-                />
-              ))}
-            </div>
-
-            {/* Secondary Numbers */}
-            {game.secondaryNumbers && (secondaryNumber !== null || secondaryText) && (
-              <div className="mt-12">
-                <h3 className="text-xl md:text-2xl font-bold text-center text-white mb-6">
-                  {game.secondaryNumbers.label}:
-                </h3>
-                <div className="flex justify-center">
-                  {game.id === "mais-milionaria" ? (
-                    // Display two clovers for Mais Milionária
-                    <div className="flex gap-4">
-                      {secondaryText.split(", ").map((trevo, index) => (
-                        <NumberBall
-                          key={index}
-                          number={parseInt(trevo)}
-                          delay={primaryNumbers.length * 400 + index * 400}
-                          isRevealed={true}
-                          gradient="bg-gradient-to-br from-green-400 to-green-600"
-                          isSecondary={true}
-                          label={`Trevo ${index + 1}`}
-                        />
-                      ))}
-                    </div>
-                  ) : game.id === "timemania" || game.id === "dia-de-sorte" ? (
-                    // Display text for Timemania and Dia de Sorte
-                    <div className={`
-                      px-8 py-6 rounded-2xl ${game.gradient}
-                      shadow-2xl border-4 border-white/20
-                      animate-reveal
-                    `}
-                    style={{ animationDelay: `${primaryNumbers.length * 400}ms` }}>
-                      <p className="text-2xl md:text-3xl font-bold text-white text-center">
-                        {formatSecondaryDisplay()}
-                      </p>
-                    </div>
-                  ) : (
-                    <NumberBall
-                      number={secondaryNumber!}
-                      delay={primaryNumbers.length * 400}
-                      isRevealed={true}
-                      gradient={game.gradient}
-                      isSecondary={true}
-                    />
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12">
-              <button
-                onClick={generateNumbers}
-                disabled={isGenerating}
-                className={`
-                  px-8 py-4 rounded-xl font-bold text-lg
-                  ${game.gradient}
-                  text-white shadow-xl
-                  hover:scale-105 active:scale-95
-                  transition-all duration-300
-                  disabled:opacity-50 disabled:cursor-not-allowed
-                  border-2 border-white/20
-                `}
-              >
-                🎲 Gerar novos números
-              </button>
-              <button
-                onClick={() => {
-                  const text = `${game.name}: ${primaryNumbers.join(", ")}${
-                    secondaryText ? ` | ${game.secondaryNumbers?.label}: ${formatSecondaryDisplay()}` : ""
-                  }`;
-                  navigator.clipboard.writeText(text);
-                  alert("Números copiados para a área de transferência!");
-                }}
-                className="px-8 py-4 rounded-xl font-bold text-lg bg-gray-800 hover:bg-gray-700 text-white shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 border-2 border-gray-600"
-              >
-                📋 Copiar números
-              </button>
-            </div>
-          </div>
+          <ResultDisplay
+            game={game}
+            primaryNumbers={primaryNumbers}
+            secondaryNumber={secondaryNumber}
+            secondaryText={secondaryText}
+            onGenerateNew={generateNumbers}
+            onCopy={handleCopy}
+          />
         )}
 
         {/* Game Info */}
